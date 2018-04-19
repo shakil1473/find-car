@@ -1,5 +1,4 @@
-#include "Admin.h"
-
+#include "../include/Admin.h"
 Admin::Admin()
 {
     //ctor
@@ -52,6 +51,11 @@ void Admin::home()
             cout<<"you don't have any unread review"<<endl;
             cin.ignore();
         }
+
+        cout<<"\t\t\t\t 1.Add New Route"<<endl;
+        cout<<"\t\t\t\t 2.Edit Route "<<endl;
+        cout<<"\t\t\t\t 3.Remove Route"<<endl;
+        cin.ignore();
     }
 
 }

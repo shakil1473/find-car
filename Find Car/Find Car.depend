@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1524170095 source:f:\project\c++ project uploaded\find-car\find car\main.cpp
+1524172413 source:f:\project\c++ project uploaded\find-car\find car\main.cpp
 	<iostream>
 	<windows.h>
 	<mysql.h>
@@ -268,19 +268,19 @@
 	<windows.h>
 	"Database.h"
 
-1524165600 f:\project\c++ project uploaded\find-car\find car\include\database.h
+1524172413 f:\project\c++ project uploaded\find-car\find car\include\database.h
 	<mysql.h>
 	<windows.h>
 	<string>
 	<iostream>
 
-1524165600 source:f:\project\c++ project uploaded\find-car\find car\src\database.cpp
+1524172413 source:f:\project\c++ project uploaded\find-car\find car\src\database.cpp
 	"Database.h"
 
-1524167139 source:f:\project\c++ project uploaded\find-car\find car\src\passenger.cpp
+1524172413 source:f:\project\c++ project uploaded\find-car\find car\src\passenger.cpp
 	"Passenger.h"
 
-1524167810 f:\project\c++ project uploaded\find-car\find car\include\admin.h
+1524172413 f:\project\c++ project uploaded\find-car\find car\include\admin.h
 	<iostream>
 	<string>
 	<mysql.h>
@@ -294,9 +294,9 @@
 	<windows.h>
 	"Database.h"
 
-1524165600 source:f:\project\c++ project uploaded\find-car\find car\src\driver.cpp
+1524172413 source:f:\project\c++ project uploaded\find-car\find car\src\driver.cpp
 	"Driver.h"
 
-1524168285 source:f:\project\c++ project uploaded\find-car\find car\src\admin.cpp
-	"Admin.h"
+1524172981 source:f:\project\c++ project uploaded\find-car\find car\src\admin.cpp
+	"../include/Admin.h"
 
