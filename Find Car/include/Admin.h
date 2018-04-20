@@ -21,6 +21,9 @@ public:
     void home();
     void readUserReview();
     void addRoute();
+    void editRoute();
+    void removeRoute();
+    void showRoad();
     void writeUserReview(string suggestoions);
 
     int anyUserReview();
