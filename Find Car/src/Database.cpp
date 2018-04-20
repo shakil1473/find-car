@@ -1,4 +1,4 @@
-#include "Database.h"
+#include "../include/Database.h"
 
 
 Database::Database()
@@ -40,16 +40,36 @@ int Database::checkAvailability(string userName)
 
 }
 
+int Database::insertIntoDataBase(string route,string fair)
+{
+
+    carRoute=route;
+    carFair = fair;
+
+    insertQuery = "insert into route(route,fair) value('"+carRoute+"',"+carFair+")";
+    query = insertQuery.c_str();
+
+    cout<<"query is: "<<query<<endl;
+
+    queryState=mysql_query(conn,query);
+
+    if(!queryState)
+    {
+        cout<<"Route added successfully.."<<endl;
+        cin.ignore();
+        return 1;
+    }
+
+    else
+        return 0;
+
+
+}
+
 int Database::insertIntoDataBase(string name,string username,string password)
 {
 
     int usernaemAvailable;
-    int queryState;
-
-    string insertQuery;
-
-
-    const char* query;
 
     pasName=name;
     pasUsername=username;

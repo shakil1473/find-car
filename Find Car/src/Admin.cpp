@@ -51,11 +51,28 @@ void Admin::home()
             cout<<"you don't have any unread review"<<endl;
             cin.ignore();
         }
-
-        cout<<"\t\t\t\t 1.Add New Route"<<endl;
+        int option;
+        do{
+            cout<<"\t\t\t\t 1.Add New Route"<<endl;
         cout<<"\t\t\t\t 2.Edit Route "<<endl;
         cout<<"\t\t\t\t 3.Remove Route"<<endl;
-        cin.ignore();
+        cout<<"\t\t\t\t 4.Log Out"<<endl;
+        cin>>option;
+
+        switch(option){
+        case 1:
+            addRoute();
+            break;
+        case 2:
+            break;
+        case 3:
+            break;
+        case 4:
+            break;
+        }
+
+        }while(option != 4);
+
     }
 
 }
@@ -72,7 +89,8 @@ int Admin::anyUserReview()
         while(database.row = mysql_fetch_row(database.res))
         {
 
-            if(database.row[1]==seen){
+            if(database.row[1]==seen)
+            {
                 return 1;
             }
 
@@ -97,16 +115,17 @@ void Admin::readUserReview()
         while(database.row = mysql_fetch_row(database.res))
         {
 
-            if(database.row[1]==seen){
+            if(database.row[1]==seen)
+            {
                 cout<<database.row[0]<<endl;
                 string insertQuery = "update review set seen = '"+upadeteSeen+"' where seen = '"+seen+"'";
 
-        const char* query = insertQuery.c_str();
+                const char* query = insertQuery.c_str();
 
-        cout<<"query is: "<<query<<endl;
-        cin.ignore();
+                cout<<"query is: "<<query<<endl;
+                cin.ignore();
 
-        int queryState=mysql_query(database.conn,query);
+                int queryState=mysql_query(database.conn,query);
             }
 
         }
@@ -144,6 +163,26 @@ void Admin::writeUserReview(string suggestoions)
             cin.ignore();
         }
     }
+
+}
+
+void Admin::addRoute()
+{
+    cin.ignore();
+    Database database;
+    int connected;
+    connected = database.createConnection();
+    if(connected)
+    {
+        string carRoute;
+        string carFair;
+        cout<<"Enter route  : ";
+        getline(cin,carRoute);
+        cout<<"Car Fair     : ";
+        getline(cin,carFair);
+        database.insertIntoDataBase(carRoute,carFair);
+    }
+
 
 }
 
