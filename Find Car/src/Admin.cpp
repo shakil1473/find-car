@@ -188,13 +188,16 @@ void Admin::addRoute()
     if(connected)
     {
         cin.ignore();
-        string carRoute;
+        string pickUpOne;
+        string pickUpTwo;
         string carFair;
-        cout<<"Enter route  : ";
-        getline(cin,carRoute);
-        cout<<"Car Fair     : ";
+        cout<<"Enter pick up point One  : ";
+        getline(cin,pickUpOne);
+        cout<<"Enter pick up point Two  : ";
+        getline(cin,pickUpTwo);
+        cout<<"Car Fair                 : ";
         getline(cin,carFair);
-        database.insertIntoDataBase(carRoute,carFair);
+        database.insertIntoDataBase(pickUpOne,pickUpTwo,carFair,'r');
     }
 
 
@@ -206,7 +209,8 @@ void Admin::editRoute()
     int connected;
     string editRouteNumber;
     string routeFair;
-    string routeName;
+    string pickUpOne;
+    string pickUpTwo;
 
     connected = database.createConnection();
     cout<<"Current Roads "<<endl;
@@ -217,8 +221,10 @@ void Admin::editRoute()
 
         cout<<"Enter the road number to edit : ";
         getline(cin,editRouteNumber);
-        cout<<"Enter new route name :";
-        getline(cin,routeName);
+        cout<<"Enter new pick up one :";
+        getline(cin,pickUpOne);
+        cout<<"Enter new pick up two :";
+        getline(cin,pickUpTwo);
         cout<<"Enter new route fair :";
         getline(cin,routeFair);
 
@@ -237,7 +243,7 @@ void Admin::editRoute()
 
                 if(database.row[0]==editRouteNumber)
                 {
-                    string updateQuery = "update route set route = '"+routeName+"',fair ='"+routeFair+"' where route_id = '"+editRouteNumber+"'";
+                    string updateQuery = "update route set pickup_one = '"+pickUpOne+"',pickup_two = '"+pickUpTwo+"',fair ='"+routeFair+"' where route_id = '"+editRouteNumber+"'";
 
                     const char* update = updateQuery.c_str();
 
@@ -246,7 +252,6 @@ void Admin::editRoute()
                     if(!queryState)
                         cout<<"Data updated successfully"<<endl;
                 }
-
 
             }
         }
@@ -311,8 +316,8 @@ void Admin::showRoad()
     connected = database.createConnection();
     if(connected)
     {
-        cout<<" Route No"<<"\t\t\t" <<"     Route     "<<"\t\t\t"<<" Fair "<<endl;
-        cout<<"----------"<<"\t\t\t"<<"---------------"<<"\t\t\t"<<"------"<<endl;
+        cout<<" Route No "<<setw(20) <<"  Pick Up One  "<<setw(20)<<"  Pick Up Two  "<<setw(20)<<" Fair "<<endl;
+        cout<<"----------"<<setw(20) <<"---------------"<<setw(20)<<"---------------"<<setw(20)<<"------"<<endl;
         string insertQuery = "select * from route";
 
         const char* query = insertQuery.c_str();
@@ -325,11 +330,13 @@ void Admin::showRoad()
             database.res = mysql_store_result(database.conn);
             while(database.row = mysql_fetch_row(database.res))
             {
-                string route =database.row[1];//route name
-                int length = route.length();//length of road name
+                string pickUpOne =database.row[1];//pick up 1 name
+                string pickUpTwo = database.row[2];//pick up 2 name
+                int lengthOne = pickUpOne.length();//length of pick up one
+                int lengthTwo = pickUpTwo.length();
 
                 //setw() used to keep gap..takes argument gap num..
-                cout<<"    "<<database.row[0]<<"  \t\t\t"<<database.row[1]<<setw(36-length)<<database.row[2]<<endl;
+                cout<<"   "<<database.row[0]<<"    "<<setw(13)<<database.row[1]<<setw(25-lengthOne)<<database.row[2]<<setw(29-lengthTwo)<<database.row[3]<<endl;
 
             }
         }

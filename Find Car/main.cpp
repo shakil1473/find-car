@@ -1,9 +1,10 @@
 #include <iostream>
 #include <windows.h>
 #include <mysql.h>
-#include "Admin.h"
-#include "Driver.h"
-#include "Passenger.h"
+#include "include/Admin.h"
+#include "include/Driver.h"
+#include "include/Database.h"
+#include "include/Passenger.h"
 
 
 using namespace std;

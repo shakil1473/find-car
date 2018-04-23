@@ -8,11 +8,13 @@ using namespace std;
 
 class Database
 {
-    string pasName;
-    string pasUsername;
-    string pasPassword;
-    string carRoute;
-    string carFair;
+    string dName;
+    string dUsername;
+    string dPassword;
+    string dMobile;
+    string dPickUpOne;
+    string dPickUpTwo;
+    string dFair;
 public:
     Database();
     MYSQL* conn;
@@ -24,9 +26,12 @@ public:
     const char* query;
 
     int createConnection();
-    int checkAvailability(string userName);
-    int insertIntoDataBase(string route,string fair);
+    int checkUserNameAvailability(string userName,char userType);
+    int checkUserValidity(string userName,string password,char userType);
+
     int insertIntoDataBase(string name,string username,string password);
+    int insertIntoDataBase(string pickUpOne,string pickUpTwo,string fair,char route);
+    int insertIntoDataBase(string driverName,string driverUsername,string driverPassword,string mobile);
     virtual ~Database();
 };
 

@@ -10,10 +10,17 @@ using namespace std;
 
 class Driver
 {
+
+string driverName;
+string driverUsername;
+string driverPassword;
+string route;
+string mobile;
 public:
     Driver();
     void logIn();
     void signUp();
+    void home();
     virtual ~Driver();
 };
 

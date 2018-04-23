@@ -19,10 +19,12 @@ int Database::createConnection()
     else
         return 0;
 }
-int Database::checkAvailability(string userName)
+int Database::checkUserNameAvailability(string userName,char userType)
 {
 
-    int qstate = mysql_query(conn,"select * from passenger");
+    int qstate;
+    if(userType=='p'){
+            qstate = mysql_query(conn,"select * from passenger");
 
     if(!qstate)
     {
@@ -36,20 +38,76 @@ int Database::checkAvailability(string userName)
 
         }
     }
+    }
+    else if(userType=='c'){
+            qstate = mysql_query(conn,"select * from driver");
+
+    if(!qstate)
+    {
+        res = mysql_store_result(conn);
+        while(row = mysql_fetch_row(res))
+        {
+            if(row[1]==userName)
+            {
+                return 0;
+            }
+
+        }
+    }
+    }
     return 1;
 
 }
 
-int Database::insertIntoDataBase(string route,string fair)
+int Database::checkUserValidity(string username,string password,char userType)
 {
 
-    carRoute=route;
-    carFair = fair;
+    int userAvailabe = 0;
+    int qstate;
+    if(userType == 'p')
+    {
 
-    insertQuery = "insert into route(route,fair) value('"+carRoute+"',"+carFair+")";
+        qstate = mysql_query(conn,"select * from passenger");
+        if(!qstate)
+        {
+            res = mysql_store_result(conn);
+            while(row= mysql_fetch_row(res))
+            {
+                if(row[1]==username&&row[2]==password)
+                {
+                    userAvailabe = 1;
+                    return userAvailabe;
+                }
+            }
+        }
+    }
+    else if(userType == 'c'){
+        cout<<"checking driver table"<<endl;
+        qstate = mysql_query(conn,"select * from driver");
+        if(!qstate){
+            res = mysql_store_result(conn);
+            while(row=mysql_fetch_row(res)){
+                if(row[1]==username&&row[2]==password)
+                {
+                    userAvailabe = 1;
+                    return userAvailabe;
+                }
+            }
+        }
+    }
+    else
+        return 0;
+}
+
+int Database::insertIntoDataBase(string pickUpOne,string pickUpTwo,string fair,char route)
+{
+
+    dPickUpOne = pickUpOne;
+    dPickUpTwo = pickUpTwo;
+    dFair = fair;
+
+    insertQuery = "insert into route(pickup_one,pickup_two,fair) value('"+dPickUpOne+"','"+dPickUpTwo+"','"+dFair+"')";
     query = insertQuery.c_str();
-
-    cout<<"query is: "<<query<<endl;
 
     queryState=mysql_query(conn,query);
 
@@ -71,11 +129,11 @@ int Database::insertIntoDataBase(string name,string username,string password)
 
     int usernaemAvailable;
 
-    pasName=name;
-    pasUsername=username;
-    pasPassword = password;
+    dName=name;
+    dUsername=username;
+    dPassword = password;
 
-    usernaemAvailable = checkAvailability(username);
+    usernaemAvailable = checkUserNameAvailability(username,'p');
 
     if(!usernaemAvailable)
     {
@@ -84,11 +142,9 @@ int Database::insertIntoDataBase(string name,string username,string password)
     }
     else
     {
-        insertQuery = "insert into passenger values('"+pasName+"','"+pasUsername+"','"+pasPassword+"')";
+        insertQuery = "insert into passenger values('"+dName+"','"+dUsername+"','"+dPassword+"')";
         query = insertQuery.c_str();
 
-        cout<<"query is: "<<query<<endl;
-        cin.ignore();
 
         queryState=mysql_query(conn,query);
 
@@ -105,6 +161,45 @@ int Database::insertIntoDataBase(string name,string username,string password)
     }
 
 }
+
+int Database::insertIntoDataBase(string driverName,string driverUsername,string driverPassword,string mobile){
+
+    int usernaemAvailable;
+
+    dName=driverName;
+    dUsername=driverUsername;
+    dPassword = driverPassword;
+    dMobile = mobile;
+
+    usernaemAvailable = checkUserNameAvailability(driverUsername,'c');
+
+    if(!usernaemAvailable)
+    {
+        cout<<"username is not available"<<endl;
+        return 0;
+    }
+    else
+    {
+        insertQuery = "insert into driver values('"+dName+"','"+dUsername+"','"+dPassword+"','"+dMobile+"')";
+        query = insertQuery.c_str();
+
+
+        queryState=mysql_query(conn,query);
+
+
+        if(!queryState)
+        {
+            cout<<"account created successfully.."<<endl;
+            cin.ignore();
+            return 1;
+        }
+
+        else
+            return 0;
+    }
+
+}
+
 
 Database::~Database()
 {
