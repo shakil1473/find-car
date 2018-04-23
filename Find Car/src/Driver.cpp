@@ -18,7 +18,6 @@ void Driver::logIn()
 
 
 
-
     do
     {
         cout << "username   : ";
@@ -70,7 +69,7 @@ void Driver::signUp()
         while(!insertSuccessful);
         if(insertSuccessful)
         {
-            cout<<"log in to be choose your road and to be available by passengers"<<endl;
+            cout<<"Please log in to select your routes.Thanks"<<endl;
 
         }
         logIn();
@@ -83,6 +82,7 @@ void Driver::home()
     Database database;
     int connected;
     connected=database.createConnection();
+    cout<<"In Home"<<endl;
     cin.ignore();
 }
 

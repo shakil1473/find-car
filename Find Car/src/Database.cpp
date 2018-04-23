@@ -82,7 +82,6 @@ int Database::checkUserValidity(string username,string password,char userType)
         }
     }
     else if(userType == 'c'){
-        cout<<"checking driver table"<<endl;
         qstate = mysql_query(conn,"select * from driver");
         if(!qstate){
             res = mysql_store_result(conn);
