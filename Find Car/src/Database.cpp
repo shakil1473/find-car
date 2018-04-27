@@ -23,37 +23,39 @@ int Database::checkUserNameAvailability(string userName,char userType)
 {
 
     int qstate;
-    if(userType=='p'){
-            qstate = mysql_query(conn,"select * from passenger");
-
-    if(!qstate)
+    if(userType=='p')
     {
-        res = mysql_store_result(conn);
-        while(row = mysql_fetch_row(res))
-        {
-            if(row[1]==userName)
-            {
-                return 0;
-            }
+        qstate = mysql_query(conn,"select * from passenger");
 
+        if(!qstate)
+        {
+            res = mysql_store_result(conn);
+            while(row = mysql_fetch_row(res))
+            {
+                if(row[1]==userName)
+                {
+                    return 0;
+                }
+
+            }
         }
     }
-    }
-    else if(userType=='c'){
-            qstate = mysql_query(conn,"select * from driver");
-
-    if(!qstate)
+    else if(userType=='c')
     {
-        res = mysql_store_result(conn);
-        while(row = mysql_fetch_row(res))
-        {
-            if(row[1]==userName)
-            {
-                return 0;
-            }
+        qstate = mysql_query(conn,"select * from driver");
 
+        if(!qstate)
+        {
+            res = mysql_store_result(conn);
+            while(row = mysql_fetch_row(res))
+            {
+                if(row[1]==userName)
+                {
+                    return 0;
+                }
+
+            }
         }
-    }
     }
     return 1;
 
@@ -81,11 +83,14 @@ int Database::checkUserValidity(string username,string password,char userType)
             }
         }
     }
-    else if(userType == 'c'){
+    else if(userType == 'c')
+    {
         qstate = mysql_query(conn,"select * from driver");
-        if(!qstate){
+        if(!qstate)
+        {
             res = mysql_store_result(conn);
-            while(row=mysql_fetch_row(res)){
+            while(row=mysql_fetch_row(res))
+            {
                 if(row[1]==username&&row[2]==password)
                 {
                     userAvailabe = 1;
@@ -98,29 +103,85 @@ int Database::checkUserValidity(string username,string password,char userType)
         return 0;
 }
 
-int Database::insertIntoDataBase(string pickUpOne,string pickUpTwo,string fair,char route)
+int Database::driverInfoChange(string username,string changedInfo,int option)
 {
 
-    dPickUpOne = pickUpOne;
-    dPickUpTwo = pickUpTwo;
-    dFair = fair;
-
-    insertQuery = "insert into route(pickup_one,pickup_two,fair) value('"+dPickUpOne+"','"+dPickUpTwo+"','"+dFair+"')";
-    query = insertQuery.c_str();
-
-    queryState=mysql_query(conn,query);
-
-    if(!queryState)
-    {
-        cout<<"Route added successfully.."<<endl;
-        cin.ignore();
-        return 1;
+    int connected;
+    connected = createConnection();
+    string changedInfoName;
+    if(option==1){
+        changedInfoName = "road";
     }
+    else if(option == 3){
+        changedInfoName = "current_location";
+    }
+    else if(option == 4){
+        changedInfoName = "available";
+    }
+    if(connected)
+    {
+        string getAllDataQuery;
+        if(option == 2||option==3)
+        {
+            getAllDataQuery= "select * from driver";
+        }
 
-    else
-        return 0;
+        else
+        {
+            getAllDataQuery = "select * from available_driver";
+        }
 
 
+        const char* query = getAllDataQuery.c_str();
+
+
+        int queryState=mysql_query(conn,query);
+
+        if(!queryState)
+        {
+            res = mysql_store_result(conn);
+            while(row = mysql_fetch_row(res))
+            {
+                string updateQuery;
+                if(option==2||option==3)
+                {
+                    string updateRowName;
+                    if(option==2)
+                        updateRowName = "password";
+                        else if(option==3)
+                        updateRowName = "mobile";
+                    if(row[1]==username)
+                    {
+
+                        updateQuery = "update driver set "+ updateRowName+ " = '"+changedInfo+"' where username = '"+username+"'";
+
+                        const char* update = updateQuery.c_str();
+
+
+                        int queryState=mysql_query(conn,update);
+                        if(!queryState)
+                            cout<<"Data updated successfully"<<endl;
+                    }
+
+                }
+                else
+                {
+                    if(row[0]==username)
+                    {
+                        updateQuery = "update available_driver set "+changedInfoName+" = '"+changedInfo
+                                            +"' where driver_id = '"+username+"'";
+
+                        const char* update = updateQuery.c_str();
+
+                        int queryState=mysql_query(conn,update);
+                        if(!queryState)
+                            cout<<"Data updated successfully"<<endl;
+                    }
+                }
+
+            }
+        }
+    }
 }
 
 int Database::insertIntoDataBase(string name,string username,string password)
@@ -160,8 +221,56 @@ int Database::insertIntoDataBase(string name,string username,string password)
     }
 
 }
+int Database::insertIntoDataBase(string pickUpOne,string pickUpTwo,string fair,char route)
+{
 
-int Database::insertIntoDataBase(string driverName,string driverUsername,string driverPassword,string mobile){
+    dPickUpOne = pickUpOne;
+    dPickUpTwo = pickUpTwo;
+    dFair = fair;
+
+    insertQuery = "insert into route(pickup_one,pickup_two,fair) value('"+dPickUpOne+"','"+dPickUpTwo+"','"+dFair+"')";
+    query = insertQuery.c_str();
+
+    queryState=mysql_query(conn,query);
+
+    if(!queryState)
+    {
+        cout<<"Route added successfully.."<<endl;
+        cin.ignore();
+        return 1;
+    }
+
+    else
+        return 0;
+
+
+}
+
+
+int Database::insertIntoDataBase(string username,string road,string currentLocation,int available)
+{
+
+    string currentlyAvailable = "1";
+
+    insertQuery = "insert into  available_driver values('"+username+"','"+road+"','"+currentLocation+"','"+currentlyAvailable+"')";
+    query = insertQuery.c_str();
+
+
+    queryState=mysql_query(conn,query);
+
+
+    if(!queryState)
+    {
+        cout<<"Your account has been created successfully."<<endl;
+        cin.ignore();
+        return 1;
+    }
+    else
+        return 0;
+}
+
+int Database::insertIntoDataBase(string driverName,string driverUsername,string driverPassword,string mobile)
+{
 
     int usernaemAvailable;
 
@@ -188,8 +297,6 @@ int Database::insertIntoDataBase(string driverName,string driverUsername,string 
 
         if(!queryState)
         {
-            cout<<"account created successfully.."<<endl;
-            cin.ignore();
             return 1;
         }
 
@@ -199,6 +306,8 @@ int Database::insertIntoDataBase(string driverName,string driverUsername,string 
 
 }
 
+void Database::deleteUser(char ch){
+}
 
 Database::~Database()
 {

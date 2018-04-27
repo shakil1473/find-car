@@ -16,11 +16,14 @@ string driverUsername;
 string driverPassword;
 string route;
 string mobile;
+string changedInfo;
 public:
     Driver();
     void logIn();
     void signUp();
-    void home();
+    void home(string username);
+    void showRoads();
+    void changeInfo(string username,int option);
     virtual ~Driver();
 };
 

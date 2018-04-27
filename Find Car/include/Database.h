@@ -29,9 +29,14 @@ public:
     int checkUserNameAvailability(string userName,char userType);
     int checkUserValidity(string userName,string password,char userType);
 
+    int driverInfoChange(string username,string changedInfo,int option);
+
     int insertIntoDataBase(string name,string username,string password);
     int insertIntoDataBase(string pickUpOne,string pickUpTwo,string fair,char route);
+    int insertIntoDataBase(string username,string road,string currentLocation,int available);
     int insertIntoDataBase(string driverName,string driverUsername,string driverPassword,string mobile);
+
+    void deleteUser(char userType);
     virtual ~Database();
 };
 
