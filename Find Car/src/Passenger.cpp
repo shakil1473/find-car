@@ -29,7 +29,7 @@ void Passenger::logIn()
 
         validUser = database.checkUserValidity(username,password,'p');
         if(validUser)
-            home();
+            home(username);
         else
         {
             cout<<"ERROR!"<<endl;
@@ -73,17 +73,113 @@ void Passenger::signUp()
     }
 }
 
-void Passenger::home()
+void Passenger::home(string userName)
 {
     cout << "welcome to home" << endl;
-    cin.ignore();
-}
-void Passenger::passengerHome()
-{
+    int option;
+    Database dataBase;
+    do
+    {
+        cout<<"\t\t\t\t1. Find Car"<<endl;
+        cout<<"\t\t\t\t2. Change Password"<<endl;
+        cout<<"\t\t\t\t3. Delete Account"<<endl;
+        cout<<"\t\t\t\t4. Log Out"<<endl;
+        cin>>option;
+        cin.ignore();
+        switch(option)
+        {
+        case 1:
+            findCar();
+            break;
+        case 2:
+            dataBase.passengerInfoChange(userName);
+            break;
+        case 3:
+            dataBase.deleteUser(userName,'p');
+            break;
+        }
+
+        if(option>4)
+            cout<<"Enter option correctly"<<endl;
+    }
+    while(option!=3&&option!=4);
 
 }
-
-Passenger::~Passenger()
+void Passenger::findCar()
 {
+    Database database;
+    Admin admin;
+
+    int connected;
+    string routeNo;
+    string available="1";
+    string driverUsername;
+
+    admin.showRoad();
+
+    cout<<"Select Your Road : ";
+    getline(cin,routeNo);
+
+    connected = database.createConnection();
+    if(connected)
+    {
+
+        string getAllFromAvail = "select * from available_driver";
+
+        const char* query = getAllFromAvail.c_str();
+
+
+        int queryState=mysql_query(database.conn,query);
+
+        if(!queryState)
+        {
+
+            database.res = mysql_store_result(database.conn);
+            cout<<"Available Cars : "<<endl;
+            cout<<"Driver Name"<<" "<<"Mobile No"<<endl;
+            while(database.row = mysql_fetch_row(database.res))
+            {
+
+                if(database.row[1]==routeNo&&database.row[3]==available)
+                {
+                    //cout<<"inside while"<<database.row[1]<<" "<<routeNo<<" "<<database.row[3]<<endl;
+                    //
+                    driverUsername = database.row[0];
+                    showDriver(driverUsername);
+                }
+
+            }
+        }
+    }
+}
+void Passenger::showDriver(string userName)
+{
+    Database database;
+
+    int connected;
+
+    connected = database.createConnection();
+    if(connected)
+    {
+
+        string getAllFromDriver = "select * from driver";
+
+        const char* query = getAllFromDriver.c_str();
+
+
+        int queryState=mysql_query(database.conn,query);
+
+        if(!queryState)
+        {
+            database.res = mysql_store_result(database.conn);
+            while(database.row = mysql_fetch_row(database.res))
+            {
+                if(database.row[1]==userName)
+                {
+                    cout<<database.row[0]<<" "<<database.row[3]<<endl;
+                }
+            }
+        }
+    }
 }
 

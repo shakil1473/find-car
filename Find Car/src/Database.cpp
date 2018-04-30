@@ -103,19 +103,63 @@ int Database::checkUserValidity(string username,string password,char userType)
         return 0;
 }
 
+void Database::passengerInfoChange(string userName)
+{
+
+    int connected;
+    string newPassword;
+    string updateQuery;
+    connected = createConnection();
+    if(connected)
+    {
+        cout<<"Enter New Password : ";
+        getline(cin,newPassword);
+
+        string getAllDataQuery= "select * from passenger";
+
+
+        const char* query = getAllDataQuery.c_str();
+
+        int queryState=mysql_query(conn,query);
+
+        if(!queryState)
+        {
+            res = mysql_store_result(conn);
+            while(row = mysql_fetch_row(res))
+            {
+                updateQuery = "update passenger set pas_password = '"+newPassword+"' where pas_username = '"+userName+"'";
+                const char* update = updateQuery.c_str();
+
+                int queryState=mysql_query(conn,update);
+                if(!queryState)
+                    cout<<"Data updated successfully"<<endl;
+            }
+        }
+    }
+}
+
 int Database::driverInfoChange(string username,string changedInfo,int option)
 {
 
     int connected;
     connected = createConnection();
     string changedInfoName;
-    if(option==1){
+    if(option==1)
+    {
         changedInfoName = "road";
     }
-    else if(option == 3){
+    else if(option==2){
+        changedInfoName="password";
+    }
+    else if(option==3){
+        changedInfoName="mobile";
+    }
+    else if(option == 4)
+    {
         changedInfoName = "current_location";
     }
-    else if(option == 4){
+    else if(option == 5)
+    {
         changedInfoName = "available";
     }
     if(connected)
@@ -148,7 +192,7 @@ int Database::driverInfoChange(string username,string changedInfo,int option)
                     string updateRowName;
                     if(option==2)
                         updateRowName = "password";
-                        else if(option==3)
+                    else if(option==3)
                         updateRowName = "mobile";
                     if(row[1]==username)
                     {
@@ -169,7 +213,7 @@ int Database::driverInfoChange(string username,string changedInfo,int option)
                     if(row[0]==username)
                     {
                         updateQuery = "update available_driver set "+changedInfoName+" = '"+changedInfo
-                                            +"' where driver_id = '"+username+"'";
+                                      +"' where driver_id = '"+username+"'";
 
                         const char* update = updateQuery.c_str();
 
@@ -306,7 +350,74 @@ int Database::insertIntoDataBase(string driverName,string driverUsername,string 
 
 }
 
-void Database::deleteUser(char ch){
+void Database::deleteUser(string username,char userType)
+{
+    int connected;
+    int queryState;
+    int delQueryState;
+    int delQueryDriverAvail;
+    string deleteQuery;
+    string getAllQuery;
+    string deleteQureyFromAvailableDriver;
+
+    connected= createConnection();
+    if(connected)
+    {
+        const char* query;
+        const char* delQuery;
+        const char* deleteQueryDriverAvail;
+        if(userType=='d')
+        {
+            getAllQuery = "select * from driver";
+            query = getAllQuery.c_str();
+            queryState = mysql_query(conn,query);
+            if(!queryState)
+            {
+                res=mysql_store_result(conn);
+                while(row=mysql_fetch_row(res))
+                {
+                    deleteQuery = "delete from driver where username = '"+username+"'";
+                    delQuery = deleteQuery.c_str();
+
+
+                    deleteQureyFromAvailableDriver= "delete from available_driver where  driver_id  ='"+username+"'";
+                    deleteQueryDriverAvail = deleteQureyFromAvailableDriver.c_str();
+
+
+                    delQueryState = mysql_query(conn,delQuery);
+                    delQueryDriverAvail = mysql_query(conn,deleteQueryDriverAvail);
+
+                }
+                if(!delQueryState&&!delQueryDriverAvail)
+                        cout<<"Account Deleted"<<endl;
+            }
+        }
+        else if(userType=='p')
+        {
+            getAllQuery = "select * from passenger";
+            query = getAllQuery.c_str();
+            queryState=mysql_query(conn,query);
+            if(!queryState)
+            {
+                res = mysql_store_result(conn);
+                while(row=mysql_fetch_row(res))
+                {
+                    deleteQuery = "delete from passenger where  pas_username ='"+username+"'";
+                    delQuery = deleteQuery.c_str();
+                    delQueryState = mysql_query(conn,delQuery);
+
+
+                }
+                if(!delQueryState)
+                        cout<<"Account Deleted"<<endl;
+
+            }
+        }
+        cin.ignore();
+    }
+
+
+
 }
 
 Database::~Database()

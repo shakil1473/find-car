@@ -29,6 +29,7 @@ public:
     int checkUserNameAvailability(string userName,char userType);
     int checkUserValidity(string userName,string password,char userType);
 
+    void passengerInfoChange(string username);
     int driverInfoChange(string username,string changedInfo,int option);
 
     int insertIntoDataBase(string name,string username,string password);
@@ -36,7 +37,8 @@ public:
     int insertIntoDataBase(string username,string road,string currentLocation,int available);
     int insertIntoDataBase(string driverName,string driverUsername,string driverPassword,string mobile);
 
-    void deleteUser(char userType);
+    void deleteUser(string userName,char userType);
+
     virtual ~Database();
 };
 

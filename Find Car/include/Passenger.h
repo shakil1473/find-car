@@ -6,6 +6,7 @@
 #include <mysql.h>
 #include <windows.h>
 #include "Database.h"
+#include "Admin.h"
 using namespace std;
 
 class Passenger
@@ -18,9 +19,10 @@ public:
     Passenger();
     void logIn();
     void signUp();
-    void home();
-    void passengerHome();
-    ~Passenger();
+    void home(string userName);
+    void findCar();
+    void showCars();
+    void showDriver(string driverUsername);
 
 };
 

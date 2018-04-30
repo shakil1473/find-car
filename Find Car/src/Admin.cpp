@@ -59,7 +59,8 @@ void Admin::home()
             cout<<"\t\t\t\t 2.Edit Route "<<endl;
             cout<<"\t\t\t\t 3.Remove Route"<<endl;
             cout<<"\t\t\t\t 4.Show Route"<<endl;
-            cout<<"\t\t\t\t 5.Log Out"<<endl;
+            cout<<"\t\t\t\t 5.Show Users"<<endl;
+            cout<<"\t\t\t\t 6.Log Out"<<endl;
             cin>>option;
 
             switch(option)
@@ -78,11 +79,14 @@ void Admin::home()
                 cin.ignore();
                 cin.ignore();
                 break;
+            case 5:
+                allUsers();
+                break;
 
             }
 
         }
-        while(option != 5);
+        while(option != 6);
 
     }
 
@@ -316,8 +320,8 @@ void Admin::showRoad()
     connected = database.createConnection();
     if(connected)
     {
-        cout<<" Route No "<<setw(20) <<"  Pick Up One  "<<setw(20)<<"  Pick Up Two  "<<setw(20)<<" Fair "<<endl;
-        cout<<"----------"<<setw(20) <<"---------------"<<setw(20)<<"---------------"<<setw(20)<<"------"<<endl;
+        cout<<" Route No "<<setw(20) <<"  From/Destination  "<<setw(20)<<"  Destination/From  "<<setw(20)<<" Fair "<<endl;
+        cout<<"----------"<<setw(20) <<"--------------------"<<setw(20)<<"--------------------"<<setw(20)<<"------"<<endl;
         string insertQuery = "select * from route";
 
         const char* query = insertQuery.c_str();
@@ -338,6 +342,56 @@ void Admin::showRoad()
                 //setw() used to keep gap..takes argument gap num..
                 cout<<"   "<<database.row[0]<<"    "<<setw(13)<<database.row[1]<<setw(25-lengthOne)<<database.row[2]<<setw(29-lengthTwo)<<database.row[3]<<endl;
 
+            }
+        }
+    }
+}
+void Admin::allUsers(){
+
+       Database database;
+
+    int connected;
+
+    connected = database.createConnection();
+    if(connected)
+    {
+
+        string getAllFromDriver = "select * from driver";
+
+        const char* query = getAllFromDriver.c_str();
+
+
+        int queryState=mysql_query(database.conn,query);
+
+        if(!queryState)
+        {
+            cout<<"\t\t\t\t Drivers :"<<endl;
+            cout<<"\t\t\t\t----------"<<endl;
+            cout<<" Driver's Name "<<endl;
+            cout<<"---------------"<<endl;
+            database.res = mysql_store_result(database.conn);
+            while(database.row = mysql_fetch_row(database.res))
+            {
+                cout<<database.row[0]<<endl;
+            }
+        }
+        getAllFromDriver = "select * from passenger";
+
+        query = getAllFromDriver.c_str();
+
+
+        queryState=mysql_query(database.conn,query);
+
+        if(!queryState)
+        {
+            cout<<"\t\t\t\t Passengers :"<<endl;
+            cout<<"\t\t\t\t-------------"<<endl;
+            cout<<" Passenger's Name "<<endl;
+            cout<<"------------------"<<endl;
+            database.res = mysql_store_result(database.conn);
+            while(database.row = mysql_fetch_row(database.res))
+            {
+                cout<<database.row[0]<<endl;
             }
         }
     }

@@ -126,7 +126,7 @@ void Driver::home(string userName)
         }
         else if(option==6){
             Database database;
-            database.deleteUser('d');
+            database.deleteUser(userName,'d');
             break;
         }
         else if(option==7){
@@ -168,7 +168,8 @@ void Driver::showRoads()
                 int lengthTwo = pickUpTwo.length();
 
                 //setw() used to keep gap..takes argument gap num..
-                cout<<"   "<<database.row[0]<<"    "<<setw(13)<<database.row[1]<<setw(25-lengthOne)<<database.row[2]<<setw(29-lengthTwo)<<database.row[3]<<endl;
+                cout<<"   "<<database.row[0]<<"    "<<setw(13)<<database.row[1]<<setw(25-lengthOne)
+                            <<database.row[2]<<setw(29-lengthTwo)<<database.row[3]<<endl;
 
             }
         }
