@@ -23,9 +23,16 @@ void Driver::logIn()
 
     do
     {
-        cout << "username   : ";
+        system("cls");
+            cout<<endl;
+            cout << "\t\t\t\t   Find Car" << endl;
+            cout << "\t\t\t\t  ----------" << endl;
+            cout<<endl<<endl;
+            cout<<"\t\t\t\t    Log In " << endl;
+            cout<<"\t\t\t\t   --------"<<endl<<endl;
+        cout << "\t\t\t\tusername   : ";
         getline(cin,username);
-        cout << "password   : ";
+        cout << "\t\t\t\tpassword   : ";
         getline(cin,password);
 
         validUser = database.checkUserValidity(username,password,'c');
@@ -33,8 +40,9 @@ void Driver::logIn()
             home(username);
         else
         {
-            cout<<"ERROR!"<<endl;
-            cout<<"The username or password that you've entered doesn't match any account."<<endl;
+            cout<<endl;
+            cout<<"\t\t\t   ERROR!"<<endl;
+            cout<<"\t\t\t   The username or password that you've entered doesn't match any account."<<endl;
             cin.ignore();
         }
         attempt++;
@@ -56,19 +64,33 @@ void Driver::signUp()
     {
         do
         {
-            cout<<"Name     : ";
+            system("cls");
+            cout<<endl;
+            cout << "\t\t\t\t   Find Car" << endl;
+            cout << "\t\t\t\t  ----------" << endl;
+            cout<<endl<<endl;
+            cout<<"\t\t\t\t    Sign Up " << endl;
+            cout<<"\t\t\t\t   ---------"<<endl<<endl;
+
+            cout<<"\t\t\t\tName     : ";
             getline(cin,driverName);
 
-            cout<<"Username : ";
+            cout<<"\t\t\t\tUsername : ";
             getline(cin,driverUsername);
 
-            cout<<"Password : ";
+            cout<<"\t\t\t\tPassword : ";
             getline(cin,driverPassword);
 
-            cout<<"Mobile No: ";
+            cout<<"\t\t\t\tMobile No: ";
             getline(cin,mobile);
-            insertSuccessfulD = database.insertIntoDataBase(driverName,driverUsername,driverPassword,mobile);
-            cout<<"Please press enter again"<<endl;
+            if(driverName.length()!=0&&driverUsername.length()!=0&&driverPassword.length()!=0&&mobile.length()!=0)
+            {
+                insertSuccessfulD = database.insertIntoDataBase(driverName,driverUsername,driverPassword,mobile);
+                cout<<endl;
+            }
+            else
+                cout<<"\t\t\t   Please insert all the informations."<<endl;
+
 
 
         }
@@ -80,12 +102,15 @@ void Driver::signUp()
             string road;
             string currentLocation;
             int available = 0;
-
-            cout<<"Select your road "<<endl;
+            cout<<endl;
+            cout<<"\t\t\t\t Select your road "<<endl;
+            cout<<"\t\t\t\t------------------"<<endl<<endl;
             showRoads();
+            cout<<endl;
+            cout<<"\t\t\t\tRoad Number : ";
             getline(cin,road);
 
-            cout<<"Your Current Location : ";
+            cout<<"\t\t\t\tYour Current Location : ";
             getline(cin,currentLocation);
 
             insertSuccessfulA = database.insertIntoDataBase(driverUsername,road,currentLocation,available);
@@ -93,9 +118,12 @@ void Driver::signUp()
             if(insertSuccessfulA)
             {
 
-                cout<<"From now passengers will find you in the apps"<<endl;
-                cout<<"To be unavailable, lonIn your account and follow instructions."<<endl;
-                cout<<"Thanks for joining us"<<endl;
+                cout<<"\t\t\t  From now passengers will find you in the apps"<<endl;
+
+                cout<<"\t\t\t  To be unavailable, lonIn your account and follow instructions."<<endl;
+
+                cout<<"\t\t\t  Thanks for joining us"<<endl;
+
                 cin.ignore();
                 logIn();
             }
@@ -106,34 +134,49 @@ void Driver::signUp()
 }
 void Driver::home(string userName)
 {
-    cout<<"\t\t\t\t\tuser : "<<userName<<endl<<endl<<endl;
-    cout<<"\t\t\t\t\tHOME"<<endl<<endl;
+
     int option;
     do
     {
-        cout<<"1.Change Route"<<endl;
-        cout<<"2.Change Password"<<endl;
-        cout<<"3.Change Mobile No"<<endl;
-        cout<<"4.Change Current Location"<<endl;
-        cout<<"5.Change Available Status"<<endl;
-        cout<<"6.Delete Account"<<endl;
-        cout<<"7.Exit"<<endl;
-        cout<<"Choose your option : ";
+        system("cls");
+        cout<<endl;
+        cout << "\t\t\t\t   Find Car" << endl;
+        cout << "\t\t\t\t  ----------" << endl;
+        cout<<endl<<endl;
+        cout<<"\t\t\t\t    Home " << endl;
+        cout<<"\t\t\t\t   ------"<<endl<<endl;
+
+        cout<<"\t\t\t\t\tuser : "<<userName<<endl<<endl<<endl;
+
+        cout<<"\t\t\t\t 1.Change Route"<<endl;
+        cout<<"\t\t\t\t 2.Change Password"<<endl;
+        cout<<"\t\t\t\t 3.Change Mobile No"<<endl;
+        cout<<"\t\t\t\t 4.Change Current Location"<<endl;
+        cout<<"\t\t\t\t 5.Change Available Status"<<endl;
+        cout<<"\t\t\t\t 6.Delete Account"<<endl;
+        cout<<"\t\t\t\t 7.Log Out"<<endl;
+        cout<<endl;
+        cout<<"\t\t\t\tChoose your option : ";
         cin>>option;
         cin.ignore();
-        if(option!=7 && option!=6){
+        if(option!=7 && option!=6)
+        {
             changeInfo(userName,option);
         }
-        else if(option==6){
+        else if(option==6)
+        {
             Database database;
             database.deleteUser(userName,'d');
             break;
         }
-        else if(option==7){
+        else if(option==7)
+        {
             break;
         }
-        else if(option<0 || option > 7){
-            cout<<"Enter option correctly"<<endl;
+        else if(option<0 || option > 7)
+        {
+            cout<<endl;
+            cout<<"\t\t\t  Enter option correctly"<<endl;
         }
 
     }
@@ -169,39 +212,55 @@ void Driver::showRoads()
 
                 //setw() used to keep gap..takes argument gap num..
                 cout<<"   "<<database.row[0]<<"    "<<setw(13)<<database.row[1]<<setw(25-lengthOne)
-                            <<database.row[2]<<setw(29-lengthTwo)<<database.row[3]<<endl;
+                    <<database.row[2]<<setw(29-lengthTwo)<<database.row[3]<<endl;
 
             }
         }
     }
 }
 
-void Driver::changeInfo(string username,int option){
-    if(option==1){
-            showRoads();
-        cout<<"Enter New Route  : ";
-            getline(cin,changedInfo);
+void Driver::changeInfo(string username,int option)
+{
+    system("cls");
+            cout<<endl;
+            cout << "\t\t\t\t   Find Car" << endl;
+            cout << "\t\t\t\t  ----------" << endl;
+            cout<<endl<<endl;
+            cout<<"\t\t\t\t    Settings "<< endl;
+            cout<<"\t\t\t\t   ----------"<<endl<<endl;
+
+    if(option==1)
+    {
+        showRoads();
+        cout<<endl;
+        cout<<"\t\t\t\tEnter New Route  : ";
+        getline(cin,changedInfo);
     }
-    else if(option==2){
-        cout<<"Enter New Password  : ";
-            getline(cin,changedInfo);
+    else if(option==2)
+    {
+        cout<<"\t\t\t\tEnter New Password  : ";
+        getline(cin,changedInfo);
     }
-    else if(option==3){
-        cout<<"Enter New Mobile No  : ";
-            getline(cin,changedInfo);
+    else if(option==3)
+    {
+        cout<<"\t\t\t\tEnter New Mobile No  : ";
+        getline(cin,changedInfo);
     }
 
-    else if(option==4){
-        cout<<"Enter Current Location   : ";
-            getline(cin,changedInfo);
+    else if(option==4)
+    {
+        cout<<"\t\t\t\tEnter Current Location   : ";
+        getline(cin,changedInfo);
     }
-    else if(option==5){
-        cout<<"Change Available status(available - 1, unavailable - 0)  : ";
-            getline(cin,changedInfo);
+    else if(option==5)
+    {
+        cout<<"\t\t\t\tChange Available status(available - 1, unavailable - 0)  : ";
+        getline(cin,changedInfo);
     }
 
     Database dataBase;
     dataBase.driverInfoChange(username,changedInfo,option);
+    cin.ignore();
 
 }
 Driver::~Driver()

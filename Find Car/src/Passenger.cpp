@@ -8,6 +8,7 @@ Passenger::Passenger()
 void Passenger::logIn()
 {
 
+
     Database database;
     int connectionSuccess=0;
     int validUser = 0;
@@ -22,9 +23,16 @@ void Passenger::logIn()
 
     do
     {
-        cout << "username   :";
+        system("cls");
+        cout<<endl;
+        cout << "\t\t\t\t   Find Car" << endl;
+        cout << "\t\t\t\t  ----------" << endl;
+        cout<<endl<<endl;
+        cout<<"\t\t\t\t     Log In " << endl;
+        cout<<"\t\t\t\t    --------"<<endl<<endl;
+        cout << "\t\t\t\tusername   :";
         getline(cin,username);
-        cout << "password   : ";
+        cout << "\t\t\t\tpassword   : ";
         getline(cin,password);
 
         validUser = database.checkUserValidity(username,password,'p');
@@ -32,8 +40,9 @@ void Passenger::logIn()
             home(username);
         else
         {
-            cout<<"ERROR!"<<endl;
-            cout<<"The username or password that you've entered doesn't match any account."<<endl;
+            cout<<endl;
+            cout<<"\t\tERROR!"<<endl;
+            cout<<"\t\tThe username or password that you've entered doesn't match any account."<<endl;
             cin.ignore();
         }
         attempt++;
@@ -56,16 +65,28 @@ void Passenger::signUp()
     {
         do
         {
-            cout<<"Name     : ";
+            system("cls");
+            cout<<endl;
+            cout << "\t\t\t\t   Find Car" << endl;
+            cout << "\t\t\t\t  ----------" << endl;
+            cout<<endl<<endl;
+            cout<<"\t\t\t\t    Sign Up " << endl;
+            cout<<"\t\t\t\t   ---------"<<endl<<endl;
+            cout<<"\t\t\t\tName     : ";
             getline(cin,pasName);
 
-            cout<<"Username : ";
+            cout<<"\t\t\t\tUsername : ";
             getline(cin,pasUsername);
 
-            cout<<"Password : ";
+            cout<<"\t\t\t\tPassword : ";
             getline(cin,pasPassword);
+            if(pasName.length()!=0&&pasUsername.length()&&pasPassword.length()!=0)
+                insertSuccessful = database.insertIntoDataBase(pasName,pasUsername,pasPassword);
+            else
+            {
+                cout<<"Please insert all the information"<<endl;
+            }
 
-            insertSuccessful = database.insertIntoDataBase(pasName,pasUsername,pasPassword);
 
         }
         while(!insertSuccessful);
@@ -75,15 +96,23 @@ void Passenger::signUp()
 
 void Passenger::home(string userName)
 {
-    cout << "welcome to home" << endl;
+
     int option;
     Database dataBase;
     do
     {
-        cout<<"\t\t\t\t1. Find Car"<<endl;
+        system("cls");
+        cout<<endl;
+        cout << "\t\t\t\t   Find Car" << endl;
+        cout << "\t\t\t\t  ----------" << endl;
+        cout<<""<<endl<<endl;
+        cout<<"\t\t\t\t     Home " << endl;
+        cout<<"\t\t\t\t    ------"<<endl<<endl;
+        cout<<"\t\t\t\t1. Get Car"<<endl;
         cout<<"\t\t\t\t2. Change Password"<<endl;
         cout<<"\t\t\t\t3. Delete Account"<<endl;
         cout<<"\t\t\t\t4. Log Out"<<endl;
+        cout<<"\t\t\t\tYou want to : ";
         cin>>option;
         cin.ignore();
         switch(option)
@@ -107,18 +136,36 @@ void Passenger::home(string userName)
 }
 void Passenger::findCar()
 {
+    system("cls");
+    cout<<endl;
+    cout << "\t\t\t\t   Find Car" << endl;
+    cout << "\t\t\t\t  ----------" << endl;
+    cout<<""<<endl<<endl;
+    cout<<"\t\t\t\t     Get Car " << endl;
+    cout<<"\t\t\t\t    ---------"<<endl<<endl;
+
     Database database;
     Admin admin;
 
     int connected;
+    int availableCar = 0;
     string routeNo;
     string available="1";
     string driverUsername;
+    string currentLocation;
 
     admin.showRoad();
-
-    cout<<"Select Your Road : ";
+    cout<<endl;
+    cout<<"\t\t\t\tSelect Your Road : ";
     getline(cin,routeNo);
+
+    system("cls");
+    cout<<endl;
+    cout << "\t\t\t\t   Find Car" << endl;
+    cout << "\t\t\t\t  ----------" << endl;
+    cout<<""<<endl<<endl;
+    cout<<"\t\t\t\t     Get Car " << endl;
+    cout<<"\t\t\t\t    ---------"<<endl<<endl;
 
     connected = database.createConnection();
     if(connected)
@@ -135,24 +182,30 @@ void Passenger::findCar()
         {
 
             database.res = mysql_store_result(database.conn);
-            cout<<"Available Cars : "<<endl;
-            cout<<"Driver Name"<<" "<<"Mobile No"<<endl;
+            cout<<endl;
+            cout<<"\t\t\t\tAvailable Cars : "<<endl;
+            cout<<endl;
+            cout<<"\t\t\t\t Driver Name "<<"   "<<" Mobile No "<<"   "<<" Current Location "<<endl;
+            cout<<"\t\t\t\t-------------"<<"   "<<"-----------"<<"   "<<"------------------"<<endl;
             while(database.row = mysql_fetch_row(database.res))
             {
 
                 if(database.row[1]==routeNo&&database.row[3]==available)
                 {
-                    //cout<<"inside while"<<database.row[1]<<" "<<routeNo<<" "<<database.row[3]<<endl;
-                    //
                     driverUsername = database.row[0];
-                    showDriver(driverUsername);
+                    currentLocation = database.row[2];
+                    showDriver(driverUsername,currentLocation);
+                    availableCar++;
                 }
 
             }
         }
     }
+    if(!availableCar)
+        cout<<"\t\t\t  No car available right now"<<endl;
+    cin.ignore();
 }
-void Passenger::showDriver(string userName)
+void Passenger::showDriver(string userName,string currentLocation)
 {
     Database database;
 
@@ -163,6 +216,7 @@ void Passenger::showDriver(string userName)
     {
 
         string getAllFromDriver = "select * from driver";
+
 
         const char* query = getAllFromDriver.c_str();
 
@@ -176,7 +230,7 @@ void Passenger::showDriver(string userName)
             {
                 if(database.row[1]==userName)
                 {
-                    cout<<database.row[0]<<" "<<database.row[3]<<endl;
+                    cout<<"\t\t\t\t"<<database.row[0]<<"   "<<database.row[3]<<"   "<<currentLocation<<endl;
                 }
             }
         }

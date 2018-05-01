@@ -105,6 +105,13 @@ int Database::checkUserValidity(string username,string password,char userType)
 
 void Database::passengerInfoChange(string userName)
 {
+    system("cls");
+    cout<<endl;
+    cout << "\t\t\t\t    Find Car" << endl;
+    cout << "\t\t\t\t   ----------" << endl;
+    cout<<endl<<endl;
+    cout<<"\t\t\t\t     Settings " << endl;
+    cout<<"\t\t\t\t    ----------"<<endl<<endl;
 
     int connected;
     string newPassword;
@@ -112,7 +119,7 @@ void Database::passengerInfoChange(string userName)
     connected = createConnection();
     if(connected)
     {
-        cout<<"Enter New Password : ";
+        cout<<"\t\t\t\tEnter New Password : ";
         getline(cin,newPassword);
 
         string getAllDataQuery= "select * from passenger";
@@ -124,16 +131,19 @@ void Database::passengerInfoChange(string userName)
 
         if(!queryState)
         {
+            int queryStateUpdate;
             res = mysql_store_result(conn);
             while(row = mysql_fetch_row(res))
             {
                 updateQuery = "update passenger set pas_password = '"+newPassword+"' where pas_username = '"+userName+"'";
                 const char* update = updateQuery.c_str();
 
-                int queryState=mysql_query(conn,update);
-                if(!queryState)
-                    cout<<"Data updated successfully"<<endl;
+                queryStateUpdate=mysql_query(conn,update);
+
             }
+            if(!queryStateUpdate)
+                cout<<"\t\t\t\tData updated successfully"<<endl;
+            cin.ignore();
         }
     }
 }
@@ -148,10 +158,12 @@ int Database::driverInfoChange(string username,string changedInfo,int option)
     {
         changedInfoName = "road";
     }
-    else if(option==2){
+    else if(option==2)
+    {
         changedInfoName="password";
     }
-    else if(option==3){
+    else if(option==3)
+    {
         changedInfoName="mobile";
     }
     else if(option == 4)
@@ -162,6 +174,7 @@ int Database::driverInfoChange(string username,string changedInfo,int option)
     {
         changedInfoName = "available";
     }
+
     if(connected)
     {
         string getAllDataQuery;
@@ -204,7 +217,7 @@ int Database::driverInfoChange(string username,string changedInfo,int option)
 
                         int queryState=mysql_query(conn,update);
                         if(!queryState)
-                            cout<<"Data updated successfully"<<endl;
+                            cout<<"\t\t\t\tData updated successfully"<<endl;
                     }
 
                 }
@@ -219,7 +232,7 @@ int Database::driverInfoChange(string username,string changedInfo,int option)
 
                         int queryState=mysql_query(conn,update);
                         if(!queryState)
-                            cout<<"Data updated successfully"<<endl;
+                            cout<<"\t\t\t\tData updated successfully"<<endl;
                     }
                 }
 
@@ -228,20 +241,22 @@ int Database::driverInfoChange(string username,string changedInfo,int option)
     }
 }
 
-int Database::insertIntoDataBase(string name,string username,string password)
+int Database::insertIntoDataBase(string pName,string pUsername,string pPassword)
 {
 
     int usernaemAvailable;
 
-    dName=name;
-    dUsername=username;
-    dPassword = password;
+    dName=pName;
+    dUsername=pUsername;
+    dPassword = pPassword;
 
-    usernaemAvailable = checkUserNameAvailability(username,'p');
+    usernaemAvailable = checkUserNameAvailability(pUsername,'p');
 
     if(!usernaemAvailable)
     {
-        cout<<"username is not available"<<endl;
+        cout<<endl;
+        cout<<"\t\t\t  username is not available"<<endl;
+        cin.ignore();
         return 0;
     }
     else
@@ -255,7 +270,8 @@ int Database::insertIntoDataBase(string name,string username,string password)
 
         if(!queryState)
         {
-            cout<<"account created successfully.."<<endl;
+            cout<<endl;
+            cout<<"\t\t\t\taccount created successfully.."<<endl;
             cin.ignore();
             return 1;
         }
@@ -279,7 +295,8 @@ int Database::insertIntoDataBase(string pickUpOne,string pickUpTwo,string fair,c
 
     if(!queryState)
     {
-        cout<<"Route added successfully.."<<endl;
+        cout<<endl;
+        cout<<"\t\t\t\tRoute added successfully.."<<endl;
         cin.ignore();
         return 1;
     }
@@ -305,7 +322,7 @@ int Database::insertIntoDataBase(string username,string road,string currentLocat
 
     if(!queryState)
     {
-        cout<<"Your account has been created successfully."<<endl;
+        cout<<"\t\t\t\tYour account has been created successfully."<<endl;
         cin.ignore();
         return 1;
     }
@@ -327,7 +344,9 @@ int Database::insertIntoDataBase(string driverName,string driverUsername,string 
 
     if(!usernaemAvailable)
     {
-        cout<<"username is not available"<<endl;
+        cout<<endl;
+        cout<<"\t\t\t\tusername is not available"<<endl;
+        cin.ignore();
         return 0;
     }
     else
@@ -389,7 +408,7 @@ void Database::deleteUser(string username,char userType)
 
                 }
                 if(!delQueryState&&!delQueryDriverAvail)
-                        cout<<"Account Deleted"<<endl;
+                    cout<<"\t\t\t\tAccount Deleted"<<endl;
             }
         }
         else if(userType=='p')
@@ -409,7 +428,7 @@ void Database::deleteUser(string username,char userType)
 
                 }
                 if(!delQueryState)
-                        cout<<"Account Deleted"<<endl;
+                    cout<<"\t\t\t\tAccount Deleted"<<endl;
 
             }
         }

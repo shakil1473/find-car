@@ -7,9 +7,13 @@ Admin::Admin()
 
 void Admin::logIn()
 {
-
-    cout<<"\t\t\t\t Admin Panel "<<endl;
-    cout<<"\t\t\t\t-------------"<<endl;
+    system("cls");
+    cout<<endl;
+    cout << "\t\t\t\t   Find Car" << endl;
+    cout << "\t\t\t\t  ----------" << endl;
+    cout<<""<<endl<<endl;
+    cout<<"\t\t\t\t     Admin " << endl;
+    cout<<"\t\t\t\t    -------"<<endl<<endl;
 
     cout<<"\t\t\t\tusername: ";
     getline(cin,adminUserName);
@@ -32,35 +36,47 @@ void Admin::home()
     int connected;
     int anyReview;
     int checkReview;
+    system("cls");
+    cout<<endl;
+    cout << "\t\t\t\t   Find Car" << endl;
+    cout << "\t\t\t\t  ----------" << endl;
+    cout<<""<<endl<<endl;
+    cout<<"\t\t\t\t     Admin " << endl;
+    cout<<"\t\t\t\t    -------"<<endl<<endl;
 
     connected = database.createConnection();
 
     if(connected)
     {
 
-        anyReview = anyUserReview();
-        if(anyReview)
-        {
 
-            cout<<"Your have unread user's review...To read press 1 otherwise enter any digit : ";
-            cin>>checkReview;
-            if(checkReview==1)
-                readUserReview();
-        }
-        else
-        {
-            cout<<"you don't have any unread review.Please press enter."<<endl;
-            cin.ignore();
-        }
+
         int option;
         do
         {
+            system("cls");
+            cout<<endl;
+            cout << "\t\t\t\t   Find Car" << endl;
+            cout << "\t\t\t\t  ----------" << endl;
+            cout<<""<<endl<<endl;
+            cout<<"\t\t\t\t     Admin's Home " << endl;
+            cout<<"\t\t\t\t    --------------"<<endl<<endl;
+            anyReview = anyUserReview();
+        if(anyReview)
+        {
+
+            cout<<"\t\t\t\t**Unread Notifications**"<<endl<<endl;
+
+        }
             cout<<"\t\t\t\t 1.Add New Route"<<endl;
             cout<<"\t\t\t\t 2.Edit Route "<<endl;
             cout<<"\t\t\t\t 3.Remove Route"<<endl;
             cout<<"\t\t\t\t 4.Show Route"<<endl;
             cout<<"\t\t\t\t 5.Show Users"<<endl;
-            cout<<"\t\t\t\t 6.Log Out"<<endl;
+            cout<<"\t\t\t\t 6.Notifications"<<endl;
+            cout<<"\t\t\t\t 7.Log Out"<<endl;
+            cout<<endl;
+            cout<<"\t\t\t\t Choose Option : ";
             cin>>option;
 
             switch(option)
@@ -75,6 +91,16 @@ void Admin::home()
                 removeRoute();
                 break;
             case 4:
+                system("cls");
+                cout<<endl;
+                cout << "\t\t\t\t   Find Car" << endl;
+                cout << "\t\t\t\t  ----------" << endl;
+                cout<<""<<endl<<endl;
+                cout<<"\t\t\t\t     Admin Panel " << endl;
+                cout<<"\t\t\t\t    -------------"<<endl<<endl;
+                cout<<""<<endl<<endl;
+                cout<<"\t\t\t\t     ADD ROUTE " << endl;
+                cout<<"\t\t\t\t    -----------"<<endl<<endl;
                 showRoad();
                 cin.ignore();
                 cin.ignore();
@@ -82,11 +108,16 @@ void Admin::home()
             case 5:
                 allUsers();
                 break;
+            case 6:
+                cin.ignore();
+                readUserReview();
+                break;
+
 
             }
 
         }
-        while(option != 6);
+        while(option != 7);
 
     }
 
@@ -115,10 +146,20 @@ int Admin::anyUserReview()
 }
 void Admin::readUserReview()
 {
-    cout<<"User Reviews: "<<endl;
+    system("cls");
+    cout<<endl;
+    cout << "\t\t\t\t   Find Car" << endl;
+    cout << "\t\t\t\t  ----------" << endl;
+    cout<<""<<endl<<endl;
+    cout<<"\t\t\t\t     Admin " << endl;
+    cout<<"\t\t\t\t    -------"<<endl<<endl;
+    cout<<"\t\t\t\t User Reviews "<<endl;
+    cout<<"\t\t\t\t--------------"<<endl<<endl;
 
     Database database;
     database.createConnection();
+
+    int countReview = 0;
 
     int qstate = mysql_query(database.conn,"select * from review");
 
@@ -133,20 +174,26 @@ void Admin::readUserReview()
             if(database.row[1]==seen)
             {
                 cout<<database.row[0]<<endl;
+                cin.ignore();
                 string insertQuery = "update review set seen = '"+upadeteSeen+"' where seen = '"+seen+"'";
+                string deleteQuery = "Delete from review where seen = '"+upadeteSeen+"'";
 
                 const char* query = insertQuery.c_str();
-
-                cout<<"query is: "<<query<<endl;
-                cin.ignore();
+                const char* queryDel = deleteQuery.c_str();
 
                 int queryState=mysql_query(database.conn,query);
+                queryState = mysql_query(database.conn,queryDel);
+                countReview++;
             }
 
         }
     }
-    cin.ignore();
-    cin.ignore();
+    if(!countReview)
+        {
+            cout<<"No New Notifications.."<<endl;
+            cin.ignore();
+        }
+
 
 }
 
@@ -166,8 +213,6 @@ void Admin::writeUserReview(string suggestoions)
 
         const char* query = insertQuery.c_str();
 
-        cout<<"query is: "<<query<<endl;
-        cin.ignore();
 
         int queryState=mysql_query(database.conn,query);
 
@@ -175,31 +220,46 @@ void Admin::writeUserReview(string suggestoions)
         if(!queryState)
         {
             cout<<"Thanks for your valuable suggestions"<<endl;
-            cin.ignore();
+
         }
     }
+    cin.ignore();
+
 
 }
 
 void Admin::addRoute()
 {
+    system("cls");
+    cout<<endl;
+    cout << "\t\t\t\t   Find Car" << endl;
+    cout << "\t\t\t\t  ----------" << endl;
+    cout<<""<<endl<<endl;
+    cout<<"\t\t\t\t     Admin Panel " << endl;
+    cout<<"\t\t\t\t    -------------"<<endl<<endl;
+    cout<<""<<endl<<endl;
+    cout<<"\t\t\t\t     ADD ROUTE " << endl;
+    cout<<"\t\t\t\t    -----------"<<endl<<endl;
 
     Database database;
     int connected;
     connected = database.createConnection();
-    cout<<"Current Roads "<<endl;
+    cout<<"\t\t\t\t Current Roads "<<endl;
+    cout<<"\t\t\t\t--------------"<<endl<<endl;
     showRoad();
+    cout<<endl<<endl;
     if(connected)
     {
+
         cin.ignore();
         string pickUpOne;
         string pickUpTwo;
         string carFair;
-        cout<<"Enter pick up point One  : ";
+        cout<<"\t\t\t\tEnter pick up point One  : ";
         getline(cin,pickUpOne);
-        cout<<"Enter pick up point Two  : ";
+        cout<<"\t\t\t\tEnter pick up point Two  : ";
         getline(cin,pickUpTwo);
-        cout<<"Car Fair                 : ";
+        cout<<"\t\t\t\tCar Fair                 : ";
         getline(cin,carFair);
         database.insertIntoDataBase(pickUpOne,pickUpTwo,carFair,'r');
     }
@@ -208,6 +268,16 @@ void Admin::addRoute()
 }
 void Admin::editRoute()
 {
+    system("cls");
+    cout<<endl;
+    cout << "\t\t\t\t   Find Car" << endl;
+    cout << "\t\t\t\t  ----------" << endl;
+    cout<<""<<endl<<endl;
+    cout<<"\t\t\t\t     Admin Panel " << endl;
+    cout<<"\t\t\t\t    -------------"<<endl<<endl;
+    cout<<""<<endl<<endl;
+    cout<<"\t\t\t\t     Edit Route " << endl;
+    cout<<"\t\t\t\t    ------------"<<endl<<endl;
 
     Database database;
     int connected;
@@ -217,19 +287,21 @@ void Admin::editRoute()
     string pickUpTwo;
 
     connected = database.createConnection();
-    cout<<"Current Roads "<<endl;
+    cout<<"\t\t\t\t Current Roads "<<endl;
+    cout<<"\t\t\t\t--------------"<<endl<<endl;
     showRoad();
+    cout<<endl<<endl;
     if(connected)
     {
         cin.ignore();
 
-        cout<<"Enter the road number to edit : ";
+        cout<<"\t\t\t\tEnter the road number to edit : ";
         getline(cin,editRouteNumber);
-        cout<<"Enter new pick up one :";
+        cout<<"\t\t\t\tEnter new pick up one :";
         getline(cin,pickUpOne);
-        cout<<"Enter new pick up two :";
+        cout<<"\t\t\t\tEnter new pick up two :";
         getline(cin,pickUpTwo);
-        cout<<"Enter new route fair :";
+        cout<<"\t\t\t\tEnter new route fair :";
         getline(cin,routeFair);
 
         string getAllDataQuery = "select * from route";
@@ -254,7 +326,8 @@ void Admin::editRoute()
 
                     int queryState=mysql_query(database.conn,update);
                     if(!queryState)
-                        cout<<"Data updated successfully"<<endl;
+                        cout<<endl;
+                    cout<<"\t\t\t\tData updated successfully"<<endl;
                 }
 
             }
@@ -262,20 +335,33 @@ void Admin::editRoute()
 
 
     }
+    cin.ignore();
 }
 void Admin::removeRoute()
 {
 
+    system("cls");
+    cout<<endl;
+    cout << "\t\t\t\t   Find Car" << endl;
+    cout << "\t\t\t\t  ----------" << endl;
+    cout<<""<<endl<<endl;
+    cout<<"\t\t\t\t     Admin Panel " << endl;
+    cout<<"\t\t\t\t    -------------"<<endl<<endl;
+    cout<<""<<endl<<endl;
+    cout<<"\t\t\t\t     Remove Route " << endl;
+    cout<<"\t\t\t\t    --------------"<<endl<<endl;
     Database database;
     int connected;
     string removeRouteNumber;
     connected = database.createConnection();
-    cout<<"Current Roads "<<endl;
+    cout<<"\t\t\t\t Current Roads "<<endl;
+    cout<<"\t\t\t\t--------------"<<endl<<endl;
     showRoad();
+    cout<<endl<<endl;
     if(connected)
     {
         cin.ignore();
-        cout<<"Enter the road number to remove : ";
+        cout<<"\t\t\t\tEnter the road number to remove : ";
         getline(cin,removeRouteNumber);
 
         string getALLDataQuery = "select * from route";
@@ -297,17 +383,17 @@ void Admin::removeRoute()
                 {
                     string deleteQuery = "delete from route where route_id = " +removeRouteNumber+";" ;
                     const char* delQuery = deleteQuery.c_str();
-                    cout<<delQuery<<endl;
                     int queryState=mysql_query(database.conn,delQuery);
-                                   if(!queryState)
+                    if(!queryState)
                     {
-                        cout<<"Data deleted successfully"<<endl;
+                        cout<<"\t\t\t\tData deleted successfully"<<endl;
                     }
 
                 }
             }
         }
     }
+    cin.ignore();
 
 
 }
@@ -346,9 +432,21 @@ void Admin::showRoad()
         }
     }
 }
-void Admin::allUsers(){
+void Admin::allUsers()
+{
 
-       Database database;
+    system("cls");
+    cout<<endl;
+    cout << "\t\t\t\t   Find Car" << endl;
+    cout << "\t\t\t\t  ----------" << endl;
+    cout<<""<<endl<<endl;
+    cout<<"\t\t\t\t     Admin Panel " << endl;
+    cout<<"\t\t\t\t    -------------"<<endl<<endl;
+    cout<<""<<endl<<endl;
+    cout<<"\t\t\t\t     All Users " << endl;
+    cout<<"\t\t\t\t    -----------"<<endl<<endl;
+
+    Database database;
 
     int connected;
 
@@ -356,9 +454,9 @@ void Admin::allUsers(){
     if(connected)
     {
 
-        string getAllFromDriver = "select * from driver";
+        string getAll = "select * from driver";
 
-        const char* query = getAllFromDriver.c_str();
+        const char* query = getAll.c_str();
 
 
         int queryState=mysql_query(database.conn,query);
@@ -375,9 +473,9 @@ void Admin::allUsers(){
                 cout<<database.row[0]<<endl;
             }
         }
-        getAllFromDriver = "select * from passenger";
+        getAll = "select * from passenger";
 
-        query = getAllFromDriver.c_str();
+        query = getAll.c_str();
 
 
         queryState=mysql_query(database.conn,query);
@@ -395,6 +493,8 @@ void Admin::allUsers(){
             }
         }
     }
+    cin.ignore();
+    cin.ignore();
 }
 Admin::~Admin()
 {

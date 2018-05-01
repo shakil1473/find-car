@@ -22,6 +22,10 @@ void whoAmI(int optionChosen)
     do
     {
         system("cls");
+        cout<<endl;
+        cout << "\t\t\t\t   Find Car" << endl;
+        cout << "\t\t\t\t  ----------" << endl;
+        cout<<endl<<endl;
 
         if(optionChosen ==1)
         {
@@ -29,6 +33,7 @@ void whoAmI(int optionChosen)
             cout<<"\t\t\t\t 1.PASSENGER"<<endl;
             cout<<"\t\t\t\t 2.DRIVER"<<endl;
             cout<<"\t\t\t\t 3.ADMIN"<<endl;
+            cout<<endl;
             cout<<"\t\t\t\t Your are [to go home press 4] : ";
 
             cin>>whoAmI;
@@ -60,7 +65,7 @@ void whoAmI(int optionChosen)
         {
             cout<<"\t\t\t\t 1.PASSENGER"<<endl;
             cout<<"\t\t\t\t 2.DRIVER"<<endl;
-
+            cout<<endl;
             cout<<"\t\t\t\t Your are Your are [to go home press 3]: ";
             cin>>whoAmI;
             cin.ignore();
@@ -83,6 +88,7 @@ void whoAmI(int optionChosen)
 
         if(whoAmI>3||whoAmI<1)
         {
+            cout<<endl;
             cout<<"Choose option correctly.Thanks"<<endl;
             cin.ignore();
         }
@@ -113,14 +119,18 @@ int main()
     {
         do
         {
+
             system("cls");
-            cout << "\t\t\t\t\t Find Car" << endl;
-            cout << "\t\t\t\t\t----------" << endl;
+            cout<<endl;
+            cout << "\t\t\t\t       Find Car" << endl;
+            cout << "\t\t\t\t      ----------" << endl;
+            cout<<endl<<endl;
 
             cout<<"\t\t\t\t 1.I have an Account"<<endl;
             cout<<"\t\t\t\t 2.Create new Account"<<endl;
             cout<<"\t\t\t\t 3.Suggestion"<<endl;
             cout<<"\t\t\t\t 4.Exit"<<endl;
+            cout<<endl;
             cout<<"\t\t\t\t Choose any option : ";
 
 
@@ -130,8 +140,13 @@ int main()
                 whoAmI(chooseOption);
             else if(chooseOption == 3)
             {
-
-                cout<<"Suggestion :"<<endl;
+                system("cls");
+                cout<<endl;
+                cout << "\t\t\t\t       Find Car" << endl;
+                cout << "\t\t\t\t      ----------" << endl;
+                cout<<endl<<endl;
+                cout<<"\t\t\t\t Suggestions "<<endl;
+                cout<<"\t\t\t\t-------------"<<endl;
                 getline(cin,suggestions);
                 admin.writeUserReview(suggestions);
             }
