@@ -1,0 +1,33 @@
+create table driver(
+	name varchar(40),
+	username varchar(45),
+	password varchar(40),
+	mobile varchar(20),
+	primary key(username)
+);
+create table passenger(
+	pas_name varchar(45),
+	pas_username varchar(45),
+	pas_password varchar(45),
+	primary key(pas_username)
+);
+create table route(
+	route_id int not null auto_increment,
+	pickup_one varchar(40),
+	pickup_two varchar(45),
+	fair varchar(10),
+	primary key(route_id)
+);
+create table review(
+	review varchar(300),
+	seen varchar(10)
+);
+
+create table available_driver(
+	driver_id varchar(40),
+	road varchar(40),
+	current_location varchar(45),
+	available varchar(5),
+	primary key(driver_id),
+	foreign key(driver_id) references driver(username)
+);
